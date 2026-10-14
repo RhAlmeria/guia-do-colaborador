@@ -1,0 +1,994 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Guia do Colaborador | Grupo Almeria</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&family=Lexend:wght@300;400;500;600&display=swap">
+<style>
+html,body{height:100%}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+
+/* Layout: tela de entrada (2 caminhos) → cadastro do novo funcionário ou guia; guia com faixa de marca, índice lateral e seções de regras; área do RH só para a dona do artefato */
+:root{
+  --bg:#f6f3ee; --surface:#ffffff; --surface-2:#efe9e1; --fg:#14273a; --muted:#5c6a78; --line:#ddd4c8;
+  --navy:#10243a; --copper:#b8681f; --copper-soft:#f3e3d2; --on-navy:#f2e8dc;
+  --warn:#a3361f; --warn-soft:#f7e1da; --ok:#2f6b4f; --ok-soft:#dcefe5;
+  --display:"Raleway","Segoe UI",Helvetica,Arial,sans-serif;
+  --body:"Lexend","Segoe UI",Helvetica,Arial,sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c1a2a; --surface:#12263b; --surface-2:#173049; --fg:#ece3d8; --muted:#9fb0c0; --line:#26405a;
+  --navy:#081320; --copper:#e0934f; --copper-soft:#3a2a1c; --on-navy:#f2e8dc;
+  --warn:#ef8e74; --warn-soft:#3b201b; --ok:#7cc9a3; --ok-soft:#173a2d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c1a2a; --surface:#12263b; --surface-2:#173049; --fg:#ece3d8; --muted:#9fb0c0; --line:#26405a;
+  --navy:#081320; --copper:#e0934f; --copper-soft:#3a2a1c; --on-navy:#f2e8dc;
+  --warn:#ef8e74; --warn-soft:#3b201b; --ok:#7cc9a3; --ok-soft:#173a2d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6;font-weight:300}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+strong,b{font-weight:500}
+a{color:var(--copper)}
+:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
+button{font:inherit}
+
+/* ===== entrada ===== */
+.gate{min-height:100%;background:var(--navy);color:var(--on-navy);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding-block:48px;padding-inline:20px}
+.gate::before{content:"";position:absolute;right:-120px;top:-120px;width:340px;height:340px;border-radius:50%;border:60px solid #a35a14}
+.gate::after{content:"";position:absolute;left:-110px;bottom:-110px;width:280px;height:280px;border-radius:50%;border:50px solid #a35a14;opacity:.85}
+.gate-in{position:relative;z-index:1;max-width:560px;width:100%;display:grid;gap:22px;justify-items:center;text-align:center}
+.gate .logo{width:150px}
+.gate h1{font-weight:300;font-size:clamp(32px,6vw,48px);color:#e8a463}
+.gate p{margin:0;color:#c9d3dc;max-width:46ch}
+.choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;width:100%;margin-top:6px}
+.choice{all:unset;box-sizing:border-box;cursor:pointer;background:#16314d;border:1px solid #2b4a6a;border-radius:14px;padding:20px 18px;display:grid;gap:6px;text-align:left}
+.choice:hover{border-color:#e0934f}
+.choice:focus-visible{outline:2px solid #e0934f;outline-offset:3px}
+.choice b{font-family:var(--display);font-size:19px;font-weight:700;color:#f2e8dc}
+.choice span{font-size:13.5px;color:#9fb0c0;line-height:1.45}
+.choice.primary{background:#e0934f;border-color:#e0934f}
+.choice.primary b{color:#10243a}.choice.primary span{color:#3b2a1a}
+.rh-link{all:unset;cursor:pointer;font-size:13px;color:#e0934f;text-decoration:underline;text-underline-offset:3px}
+
+.logo{aspect-ratio:636/430;background:var(--on-navy);-webkit-mask:url(img/logo-mask.png) center/contain no-repeat;mask:url(img/logo-mask.png) center/contain no-repeat;flex:none}
+
+/* ===== faixa de marca ===== */
+.brand{background:var(--navy);color:var(--on-navy);position:relative;overflow:hidden}
+.brand::after{content:"";position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;border:46px solid #a35a14;opacity:.95}
+.brand-in{max-width:1180px;margin:0 auto;padding:28px 20px 30px;display:flex;gap:24px;align-items:center;position:relative;z-index:1;flex-wrap:wrap}
+.brand .logo{width:92px}
+.brand-txt{min-width:0;flex:1 1 300px}
+.eyebrow{font-family:var(--display);letter-spacing:.14em;text-transform:uppercase;font-size:12px;color:#e0934f;font-weight:600}
+section .eyebrow,.panel .eyebrow{color:var(--copper)}
+.brand h1{font-weight:300;font-size:clamp(30px,5vw,46px);color:#e8a463;margin:4px 0 6px}
+.brand p{margin:0;max-width:60ch;color:#c9d3dc;font-size:15px}
+.brand-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ghost{all:unset;cursor:pointer;font-size:13px;color:#f2e8dc;border:1px solid #3b5a7a;border-radius:999px;padding:4px 12px}
+.ghost:hover{border-color:#e0934f}
+.ghost:focus-visible{outline:2px solid #e0934f;outline-offset:2px}
+
+/* ===== barra de busca ===== */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;gap:12px;align-items:center}
+.search{flex:1;min-width:0;position:relative}
+.search input{width:100%;font:inherit;font-weight:400;padding:10px 14px 10px 38px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--muted)}
+.count{font-size:13px;color:var(--muted);white-space:nowrap}
+
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:28px 60px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}
+nav.toc{position:sticky;top:76px;align-self:start;display:flex;flex-direction:column;gap:2px}
+nav.toc a{color:var(--muted);text-decoration:none;font-size:14px;padding:6px 10px;border-radius:6px;font-weight:400}
+nav.toc a:hover{background:var(--surface-2);color:var(--fg)}
+nav.toc a.on{color:var(--copper);background:var(--copper-soft)}
+nav.toc .tl{font-family:var(--display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding:0 10px 6px;font-weight:600}
+main{min-width:0;display:flex;flex-direction:column;gap:56px}
+
+section > header{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+section h2,.panel h2{font-size:clamp(24px,3.4vw,32px);font-weight:600;color:var(--fg)}
+section h2 em{font-style:normal;color:var(--copper);font-weight:300}
+.lede{color:var(--muted);max-width:68ch;margin:0}
+
+/* calendário */
+.cal{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cal .day{align-content:start}
+.day .n{font-family:var(--display);font-size:34px;font-weight:300;color:var(--copper);line-height:1;font-variant-numeric:tabular-nums}
+.day .n small{font-size:14px;font-weight:600;letter-spacing:.04em}
+.day h3{font-size:15px;font-weight:700}
+.day p{margin:0;font-size:13px;color:var(--muted)}
+.next{margin-top:18px;background:var(--navy);color:var(--on-navy);border-radius:var(--r);padding:18px 20px}
+.next h3{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#e0934f;font-weight:600;margin-bottom:10px}
+.next ol{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.next li{display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:12px;align-items:baseline;border-top:1px solid #23405c;padding-top:8px;font-size:14px}
+.next li:first-child{border-top:0;padding-top:0}
+.next .d{font-variant-numeric:tabular-nums;font-weight:500;color:#e8a463}
+.next .in{font-size:12px;color:#9fb0c0;white-space:nowrap}
+
+/* regras */
+.rules{display:grid;gap:10px}
+.rule{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;display:grid;gap:8px;min-width:0}
+.rule h3{font-family:var(--body);font-size:16px;font-weight:500}
+.rule p{margin:0;max-width:72ch}
+.rule ul{margin:0;padding-left:18px;display:grid;gap:4px;max-width:72ch}
+.meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.src{font-size:11.5px;font-weight:500;letter-spacing:.02em;padding:2px 9px;border-radius:999px;background:var(--surface-2);color:var(--muted)}
+.risk{font-size:12px;font-weight:500;padding:2px 9px;border-radius:999px;background:var(--warn-soft);color:var(--warn)}
+.deadline{font-family:var(--display);font-weight:700;color:var(--copper);font-size:22px;line-height:1}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+
+/* clínica */
+.clinic{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;align-items:start}
+.clinic img{width:100%;border-radius:8px;border:1px solid var(--line);cursor:zoom-in}
+.clinic dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:14px}
+.clinic dt{color:var(--muted);font-weight:400}
+.clinic dd{margin:0}
+.hours{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:4px}
+.hour{background:var(--copper-soft);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+.hour b{font-size:13px;font-weight:500}
+.hour span{font-family:var(--display);font-weight:700;font-size:18px;color:var(--copper);font-variant-numeric:tabular-nums}
+.phones{display:flex;flex-wrap:wrap;gap:6px}
+.phone{all:unset;cursor:pointer;font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:999px;padding:2px 10px;font-size:13.5px}
+.phone:hover{border-color:var(--copper)}
+.phone:focus-visible{outline:2px solid var(--copper)}
+
+/* vídeo */
+.video{display:grid;grid-template-columns:220px minmax(0,1fr);gap:20px;align-items:center}
+.video video{width:100%;max-width:220px;aspect-ratio:382/850;border-radius:14px;background:#000;border:1px solid var(--line)}
+
+/* escada disciplinar */
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.step b{font-family:var(--display);font-weight:700;font-size:15px}
+.step span{font-size:13px;color:var(--muted)}
+.step:nth-child(1){border-top:4px solid #d9b48d}.step:nth-child(2){border-top:4px solid #c98946}.step:nth-child(3){border-top:4px solid #a85a1d}.step:nth-child(4){border-top:4px solid var(--warn)}
+
+.values{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0!important;list-style:none}
+.values li{padding:6px 14px;border-radius:999px;border:1px solid var(--copper);color:var(--copper);font-size:14px;font-weight:400}
+.mvv{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px;margin-bottom:10px}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--display);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;white-space:nowrap;background:var(--surface)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.form-card{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:18px;align-items:center;background:var(--navy);color:var(--on-navy);border-radius:var(--r);padding:20px;border:0}
+.form-card h3{color:#e8a463;font-size:20px;font-weight:600;margin-bottom:6px;font-family:var(--display)}
+.form-card p{margin:0 0 12px;color:#c9d3dc}
+.btn{display:inline-block;background:#e0934f;color:#10243a;font-weight:500;text-decoration:none;padding:9px 18px;border-radius:999px;border:0;cursor:pointer}
+.btn:disabled{opacity:.55;cursor:default}
+.btn.line{background:transparent;color:var(--copper);border:1px solid var(--copper)}
+.qr{width:150px;border-radius:8px;background:#fff;padding:6px}
+
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.thumb{all:unset;cursor:pointer;display:grid;gap:8px;border-radius:var(--r);align-content:start}
+.thumb img{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:top;border-radius:8px;border:1px solid var(--line);display:block}
+.thumb span{font-size:13px;line-height:1.35;font-weight:400}
+.thumb:hover img{border-color:var(--copper)}
+.thumb:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+.lb{position:fixed;inset:0;background:rgba(5,12,20,.86);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.lb img{max-height:92vh;max-width:min(560px,100%);border-radius:8px}
+.lb button{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:16px;background:#e0934f;color:#10243a;border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+
+.docs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.doc b{font-family:var(--display);font-weight:700}
+.doc span{font-size:13px;color:var(--muted)}
+.doc .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.doc .acts a,.doc .acts button{font-size:13px;padding:6px 14px}
+.doc .msg{font-size:12px;color:var(--muted)}
+footer.end{border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:13px}
+.empty{color:var(--muted);padding:20px 0}
+
+/* ===== cadastro ===== */
+.panel{max-width:820px;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:grid;gap:22px}
+.panel.wide{max-width:1280px}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.back{all:unset;cursor:pointer;color:var(--copper);font-size:14px}
+.back:focus-visible{outline:2px solid var(--copper)}
+fieldset{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:18px;margin:0;display:grid;gap:14px;min-width:0}
+legend{font-family:var(--display);font-weight:700;font-size:16px;padding:0 6px;color:var(--fg)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:grid;gap:5px;min-width:0}
+.field > label,.field > .lbl{font-size:13.5px;font-weight:500}
+.req{color:var(--warn)}
+.hint{font-size:12.5px;color:var(--muted);margin:0}
+input[type=text],input[type=email],input[type=tel],input[type=date],input[type=number],select,textarea{font:inherit;font-weight:400;width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg)}
+textarea{min-height:70px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--copper);outline-offset:0;border-color:transparent}
+.opts{display:flex;flex-wrap:wrap;gap:6px}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.opt span{display:block;border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:13.5px;background:var(--bg)}
+.opt input:checked + span{background:var(--copper);border-color:var(--copper);color:#fff;font-weight:500}
+.opt input:focus-visible + span{outline:2px solid var(--copper);outline-offset:2px}
+.check{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;font-size:14px}
+.check input{width:18px;height:18px;margin-top:3px;accent-color:var(--copper)}
+.notice{border-radius:var(--r);padding:12px 14px;font-size:14px}
+.notice.warn{background:var(--warn-soft);color:var(--warn)}
+.notice.info{background:var(--copper-soft);color:var(--fg)}
+.notice.ok{background:var(--ok-soft);color:var(--ok)}
+.err{font-size:12.5px;color:var(--warn)}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--warn)}
+.submitrow{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+
+/* ===== área do RH ===== */
+.filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;align-items:end}
+.filters .field label{font-size:12px;color:var(--muted);font-weight:500}
+.cols{display:flex;flex-wrap:wrap;gap:6px}
+.stat{font-size:14px;color:var(--muted)}
+.stat b{color:var(--fg);font-variant-numeric:tabular-nums}
+.rowdel{all:unset;cursor:pointer;color:var(--warn);font-size:12.5px}
+.rowdel:focus-visible{outline:2px solid var(--warn)}
+#rhTable td{white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+.flag{font-size:11.5px;font-weight:500;padding:1px 8px;border-radius:999px;background:var(--warn-soft);color:var(--warn)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--navy);color:var(--on-navy);padding:10px 18px;border-radius:999px;z-index:60;font-size:14px}
+
+@media (max-width:1100px){.cal{grid-template-columns:repeat(3,minmax(0,1fr))}.filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){
+  .wrap{grid-template-columns:minmax(0,1fr);gap:20px;padding-block:16px 50px;padding-inline:16px}
+  nav.toc{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding-bottom:6px;scrollbar-width:none}
+  nav.toc .tl{display:none}
+  nav.toc a{white-space:nowrap;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px}
+  .ladder{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cal{grid-template-columns:minmax(0,1fr)}
+  .cal .day{grid-template-columns:96px minmax(0,1fr);column-gap:14px;row-gap:2px}
+  .cal .day .n{grid-row:span 2;font-size:28px}
+  .brand::after{width:150px;height:150px;border-width:26px;right:-60px;top:-60px;opacity:.6}
+  .form-card{grid-template-columns:minmax(0,1fr)}
+  .qr{width:130px}
+  .brand-in{padding:22px 16px 24px}
+  .bar-in{padding:10px 16px}
+  .next li{grid-template-columns:78px minmax(0,1fr)}
+  .next .in{grid-column:2}
+  .clinic,.video{grid-template-columns:minmax(0,1fr)}
+  .clinic img{max-width:220px}
+  .video video{justify-self:center}
+  .grid2{grid-template-columns:minmax(0,1fr)}
+  .choices{grid-template-columns:minmax(0,1fr)}
+  .filters{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .panel{padding-inline:16px}
+  .gate::before{width:200px;height:200px;border-width:36px;right:-80px;top:-80px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+.gitem{display:grid;gap:6px;align-content:start;background:transparent;border:0;padding:0}
+.dlink{font-size:12.5px;font-weight:500;text-decoration:none;color:var(--copper);justify-self:start}
+.dlink:hover{text-decoration:underline}
+.lbbar{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:16px;display:flex;gap:8px}
+.lbbar button{position:static}
+.lb .lbbar .btn{padding:6px 14px}
+.login{max-width:380px;width:100%;margin:24px auto;display:grid;gap:14px;justify-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:26px}
+.login .logo{width:80px;background:var(--fg);justify-self:center}
+.login h2{text-align:center}
+.login .lede{text-align:center}
+#rhPanel[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- ================= ENTRADA ================= -->
+<div class="gate" id="viewGate">
+  <div class="gate-in">
+    <div class="logo" role="img" aria-label="Grupo Almeria"></div>
+    <div>
+      <div class="eyebrow">Recursos Humanos</div>
+      <h1>Guia do Colaborador</h1>
+    </div>
+    <p>Bem-vindo(a) ao Grupo Almeria. Escolha uma opção para continuar.</p>
+    <div class="choices">
+      <button type="button" class="choice" id="goGuide"><b>Já sou funcionário</b><span>Ir direto para as regras, prazos e benefícios.</span></button>
+      <button type="button" class="choice primary" id="goForm"><b>Sou novo funcionário</b><span>Preencher o formulário de registro e depois ver o guia.</span></button>
+    </div>
+    <button type="button" class="rh-link" id="gateRh">Acesso do RH</button>
+  </div>
+</div>
+
+<!-- ================= CADASTRO ================= -->
+<div id="viewForm" hidden>
+  <div class="brand"><div class="brand-in">
+    <div class="logo" role="img" aria-label="Grupo Almeria"></div>
+    <div class="brand-txt">
+      <div class="eyebrow">Sou novo funcionário</div>
+      <h1>Formulário de Registro</h1>
+      <p>Seus dados pessoais e profissionais substituem a ficha em papel. Preencha com atenção: as informações são tratadas com confidencialidade e usadas só para fins administrativos e legais.</p>
+    </div>
+  </div></div>
+  <form class="panel" id="regForm" novalidate>
+    <div class="topline"><button type="button" class="back" data-go="gate">← Voltar</button><span class="hint"><span class="req">*</span> obrigatório</span></div>
+    <div class="notice warn" id="formBlocked" hidden></div>
+    
+    <fieldset>
+      <legend>Dados pessoais</legend>
+      <div class="field"><label for="f_email">E-mail <span class="req">*</span></label><input type="email" id="f_email" name="email" required autocomplete="email"></div>
+      <div class="grid2">
+        <div class="field"><label for="f_nome">Nome completo <span class="req">*</span></label><input type="text" id="f_nome" name="nome" required autocomplete="name"></div>
+        <div class="field"><label for="f_social">Nome social (se houver)</label><input type="text" id="f_social" name="nomeSocial"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="f_nasc">Data de nascimento <span class="req">*</span></label><input type="date" id="f_nasc" name="nascimento" required></div>
+        <div class="field"><label for="f_cpf">CPF <span class="req">*</span></label><input type="text" id="f_cpf" name="cpf" inputmode="numeric" placeholder="000.000.000-00" required></div>
+      </div>
+      <div class="field"><span class="lbl" id="l_sexo">Sexo <span class="req">*</span></span>
+        <div class="opts" role="radiogroup" aria-labelledby="l_sexo" data-name="sexo" data-req>
+          <label class="opt"><input type="radio" name="sexo" value="Feminino" id="f_sexo_f"><span>Feminino</span></label>
+          <label class="opt"><input type="radio" name="sexo" value="Masculino" id="f_sexo_m"><span>Masculino</span></label>
+          <label class="opt"><input type="radio" name="sexo" value="Outro" id="f_sexo_o"><span>Outro</span></label>
+        </div>
+        <input type="text" id="f_sexoOutro" name="sexoOutro" placeholder="Qual?" hidden>
+      </div>
+      <div class="field"><span class="lbl" id="l_raca">Raça/Cor <span class="req">*</span></span>
+        <div class="opts" role="radiogroup" aria-labelledby="l_raca" data-name="racaCor" data-req>
+          <label class="opt"><input type="radio" name="racaCor" value="Amarelo" id="f_r1"><span>Amarelo</span></label>
+          <label class="opt"><input type="radio" name="racaCor" value="Branco" id="f_r2"><span>Branco</span></label>
+          <label class="opt"><input type="radio" name="racaCor" value="Indígena" id="f_r3"><span>Indígena</span></label>
+          <label class="opt"><input type="radio" name="racaCor" value="Pardo" id="f_r4"><span>Pardo</span></label>
+          <label class="opt"><input type="radio" name="racaCor" value="Preto" id="f_r5"><span>Preto</span></label>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label for="f_civil">Estado civil <span class="req">*</span></label>
+          <select id="f_civil" name="estadoCivil" required><option value="">Selecione</option><option>Solteiro(a)</option><option>Casado(a)</option><option>União estável</option><option>Divorciado(a)</option><option>Viúvo(a)</option></select></div>
+        <div class="field"><label for="f_tel">Telefone (WhatsApp) <span class="req">*</span></label><input type="tel" id="f_tel" name="telefone" inputmode="tel" placeholder="(61) 90000-0000" required autocomplete="tel"></div>
+      </div>
+      <div class="field"><label for="f_esc">Escolaridade <span class="req">*</span></label>
+        <select id="f_esc" name="escolaridade" required><option value="">Selecione</option><option>Analfabeto</option><option>Até 5º ano incompleto</option><option>5º ano completo</option><option>6º ao 9º ano do fundamental</option><option>Fundamental completo</option><option>Médio incompleto</option><option>Médio completo</option><option>Superior incompleto</option><option>Superior completo</option><option>Mestrado</option><option>Doutorado</option></select></div>
+      <div class="field"><label for="f_end">Endereço completo <span class="req">*</span></label><textarea id="f_end" name="endereco" required placeholder="Rua/quadra, número, bairro, cidade, CEP"></textarea></div>
+      <div class="field"><span class="lbl" id="l_pcd">Pessoa com deficiência? <span class="req">*</span></span>
+        <div class="opts" role="radiogroup" aria-labelledby="l_pcd" data-name="pcd" data-req>
+          <label class="opt"><input type="radio" name="pcd" value="Sim" id="f_pcd_s"><span>Sim</span></label>
+          <label class="opt"><input type="radio" name="pcd" value="Não" id="f_pcd_n"><span>Não</span></label>
+        </div>
+        <div id="pcdBox" hidden class="field"><label for="f_pcdQual">Qual?</label><input type="text" id="f_pcdQual" name="pcdQual"><p class="hint">Entregue o laudo médico ao RH.</p></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Contratação</legend>
+      <div class="grid2">
+        <div class="field"><label for="f_unid">Unidade <span class="req">*</span></label>
+          <select id="f_unid" name="unidade" required><option value="">Selecione</option></select></div>
+        <div class="field"><label for="f_cargo">Cargo / função <span class="req">*</span></label><input type="text" id="f_cargo" name="cargo" required placeholder="Ex.: garçom, cozinheiro, hostess"></div>
+      </div>
+      <div class="field"><label for="f_inicio">Data prevista de início</label><input type="date" id="f_inicio" name="inicio"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Parentesco</legend>
+      <div class="notice info">Por política interna, o Grupo Almeria não contrata parentes de colaboradores. Responda com sinceridade: a informação é analisada pelo RH.</div>
+      <div class="field"><span class="lbl" id="l_par">Você tem algum parente que trabalha no Grupo Almeria? <span class="req">*</span></span>
+        <div class="opts" role="radiogroup" aria-labelledby="l_par" data-name="parente" data-req>
+          <label class="opt"><input type="radio" name="parente" value="Sim" id="f_par_s"><span>Sim</span></label>
+          <label class="opt"><input type="radio" name="parente" value="Não" id="f_par_n"><span>Não</span></label>
+        </div>
+      </div>
+      <div id="parBox" hidden class="grid2">
+        <div class="field"><label for="f_parNome">Nome do parente <span class="req">*</span></label><input type="text" id="f_parNome" name="parenteNome"></div>
+        <div class="field"><label for="f_parGrau">Grau de parentesco <span class="req">*</span></label>
+          <select id="f_parGrau" name="parenteGrau"><option value="">Selecione</option><option>Pai/mãe</option><option>Filho(a)</option><option>Irmão(ã)</option><option>Cônjuge/companheiro(a)</option><option>Tio(a)</option><option>Sobrinho(a)</option><option>Primo(a)</option><option>Avô/avó</option><option>Neto(a)</option><option>Cunhado(a)</option><option>Sogro(a)</option><option>Genro/nora</option><option>Outro</option></select></div>
+        <div class="field"><label for="f_parUnid">Unidade onde o parente trabalha</label><input type="text" id="f_parUnid" name="parenteUnidade"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Benefícios e pagamento</legend>
+      <div class="grid2">
+        <div class="field"><span class="lbl" id="l_dep">Possui dependentes? <span class="req">*</span></span>
+          <div class="opts" role="radiogroup" aria-labelledby="l_dep" data-name="dependentes" data-req>
+            <label class="opt"><input type="radio" name="dependentes" value="Sim" id="f_dep_s"><span>Sim</span></label>
+            <label class="opt"><input type="radio" name="dependentes" value="Não" id="f_dep_n"><span>Não</span></label>
+          </div>
+          <input type="number" id="f_depQtd" name="dependentesQtd" min="1" max="20" placeholder="Quantos?" hidden>
+        </div>
+        <div class="field"><span class="lbl" id="l_vt">Utiliza vale-transporte? <span class="req">*</span></span>
+          <div class="opts" role="radiogroup" aria-labelledby="l_vt" data-name="vt" data-req>
+            <label class="opt"><input type="radio" name="vt" value="Sim" id="f_vt_s"><span>Sim</span></label>
+            <label class="opt"><input type="radio" name="vt" value="Não" id="f_vt_n"><span>Não</span></label>
+          </div>
+          <div id="vtBox" hidden class="field"><label for="f_vtValor">Valor diário (ida e volta) <span class="req">*</span></label><input type="text" id="f_vtValor" name="vtValor" placeholder="Ex.: R$ 11,00 ou não sei"></div>
+        </div>
+      </div>
+      <div class="field"><label for="f_inter">Conta Inter para salário, VT e comissão <span class="req">*</span></label><input type="text" id="f_inter" name="contaInter" placeholder="Agência e conta Inter, ou a chave PIX" required>
+        <p class="hint">A conta Inter é obrigatória. Se ainda não conseguiu abrir, informe sua chave PIX.</p></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Uniforme</legend>
+      <div class="grid2">
+        <div class="field"><label for="f_blusa">Blusa <span class="req">*</span></label>
+          <select id="f_blusa" name="blusa" required><option value="">Selecione</option><option>PP</option><option>P</option><option>M</option><option>G</option><option>GG</option><option>XG</option><option>XXG</option></select></div>
+        <div class="field"><label for="f_calca">Calça <span class="req">*</span></label>
+          <select id="f_calca" name="calca" required><option value="">Selecione</option><option>PP</option><option>P</option><option>M</option><option>G</option><option>GG</option><option>XG</option><option>XXG</option><option>36</option><option>38</option><option>40</option><option>42</option><option>44</option><option>46</option><option>48</option><option>50</option></select></div>
+      </div>
+      <div class="field"><label for="f_sapato">Número do sapato <span class="req">*</span></label><input type="number" id="f_sapato" name="sapato" min="30" max="50" required></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Confirmação</legend>
+      <label class="check"><input type="checkbox" id="f_decl" name="declaracao"><span>Declaro que as informações acima são verdadeiras e que avisarei o RH se alguma delas mudar. <span class="req">*</span></span></label>
+      <label class="check"><input type="checkbox" id="f_lgpd" name="lgpd"><span>Autorizo o Grupo Almeria a usar estes dados para meu registro e para as obrigações trabalhistas, conforme a LGPD. <span class="req">*</span></span></label>
+    </fieldset>
+
+    <div class="notice warn" id="formErr" hidden></div>
+    <div class="submitrow">
+      <button type="submit" class="btn" id="sendBtn">Enviar e ir para o guia</button>
+      <span class="hint" id="sendHint">Revise as respostas antes de enviar.</span>
+    </div>
+  </form>
+</div>
+
+<!-- ================= ÁREA DO RH ================= -->
+<div id="viewRh" hidden>
+  <div class="panel wide">
+    <div class="topline">
+      <button type="button" class="back" data-go="gate">← Voltar ao início</button>
+      <span class="hint">Área restrita ao RH.</span>
+    </div>
+    <form class="login" id="rhLogin" autocomplete="off">
+      <div class="logo" role="img" aria-label="Grupo Almeria"></div>
+      <h2>Acesso do RH</h2>
+      <p class="lede">Digite a senha para ver os cadastros dos novos funcionários.</p>
+      <div class="field"><label for="rhPass">Senha</label><input type="password" id="rhPass" autocomplete="current-password"></div>
+      <div class="notice warn" id="rhLoginMsg" hidden></div>
+      <button type="submit" class="btn" id="rhEnter">Entrar</button>
+    </form>
+    <div id="rhPanel" hidden style="display:grid;gap:22px">
+    <header style="display:grid;gap:6px">
+      <div class="topline"><div class="eyebrow">Área do RH</div><button type="button" class="back" id="rhOut">Sair</button></div>
+      <h2>Cadastros de novos funcionários</h2>
+      <p class="lede">Histórico de todos os formulários enviados, do mais recente para o mais antigo. Filtre, escolha as colunas e baixe a planilha.</p>
+    </header>
+    <div class="notice warn" id="rhErr" hidden></div>
+    <div class="filters">
+      <div class="field"><label for="r_de">Enviado de</label><input type="date" id="r_de"></div>
+      <div class="field"><label for="r_ate">Enviado até</label><input type="date" id="r_ate"></div>
+      <div class="field"><label for="r_unid">Unidade</label><select id="r_unid"><option value="">Todas</option></select></div>
+      <div class="field"><label for="r_nome">Nome ou CPF</label><input type="text" id="r_nome" placeholder="Buscar"></div>
+      <div class="field"><label for="r_cargo">Cargo</label><input type="text" id="r_cargo" placeholder="Buscar"></div>
+      <div class="field"><label for="r_par">Parente na empresa</label><select id="r_par"><option value="">Todos</option><option>Sim</option><option>Não</option></select></div>
+      <div class="field"><label for="r_vt">Usa VT</label><select id="r_vt"><option value="">Todos</option><option>Sim</option><option>Não</option></select></div>
+      <div class="field"><label for="r_pcd">PcD</label><select id="r_pcd"><option value="">Todos</option><option>Sim</option><option>Não</option></select></div>
+    </div>
+    <details>
+      <summary style="cursor:pointer;font-weight:500">Colunas da planilha</summary>
+      <div class="cols" id="rhCols" style="margin-top:10px"></div>
+      <div style="display:flex;gap:10px;margin-top:8px"><button type="button" class="rh-link" style="color:var(--copper)" id="colAll">Marcar todas</button><button type="button" class="rh-link" style="color:var(--copper)" id="colNone">Desmarcar todas</button></div>
+    </details>
+    <div class="topline">
+      <span class="stat" id="rhStat">Carregando cadastros…</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button type="button" class="btn line" id="rhReload">Atualizar</button>
+        <button type="button" class="btn line" id="rhClear">Limpar filtros</button>
+        <button type="button" class="btn line" id="rhCsv">Baixar CSV</button>
+        <button type="button" class="btn" id="rhXlsx">Baixar Excel</button>
+      </div>
+    </div>
+    <div class="tbl"><table id="rhTable"><thead></thead><tbody></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= GUIA ================= -->
+<div id="viewGuide" hidden>
+<div class="brand">
+  <div class="brand-in">
+    <div class="logo" role="img" aria-label="Grupo Almeria"></div>
+    <div class="brand-txt">
+      <div class="eyebrow">Grupo Almeria · Recursos Humanos</div>
+      <h1>Guia do Colaborador</h1>
+      <p>As regras da casa, os nossos prazos e os seus direitos, num lugar só. Baseado no Manual de Conduta e Ética, na Convenção Coletiva 2026/2028, no Acordo Coletivo do Grupo e nos comunicados do RH.</p>
+      <div class="brand-actions">
+        <button type="button" class="ghost" data-go="gate">Início</button>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bar"><div class="bar-in">
+  <label class="search" for="q">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Buscar: atestado, ponto, comissão, uniforme, celular…" autocomplete="off" aria-label="Buscar no guia">
+  </label>
+  <span class="count" id="count" aria-live="polite"></span>
+</div></div>
+
+<div class="wrap">
+  <nav class="toc" id="toc" aria-label="Seções">
+    <div class="tl">Neste guia</div>
+    <a href="#datas">Datas e pagamentos</a>
+    <a href="#ponto">Ponto e jornada</a>
+    <a href="#ausencias">Faltas e atestados</a>
+    <a href="#plantao">Troca de plantão</a>
+    <a href="#conduta">Conduta e convivência</a>
+    <a href="#higiene">Higiene e segurança</a>
+    <a href="#disciplina">Medidas disciplinares</a>
+    <a href="#direitos">Direitos e benefícios</a>
+    <a href="#quem">Quem somos</a>
+    <a href="#comunicados">Comunicados</a>
+    <a href="#documentos">Documentos</a>
+  </nav>
+
+  <main id="main">
+
+    <section id="datas" data-sec>
+      <header>
+        <div class="eyebrow">Calendário fixo</div>
+        <h2>Datas e pagamentos <em>todo mês</em></h2>
+        <p class="lede">Estas datas se repetem todos os meses. Quando o dia cair em fim de semana ou feriado, o RH avisa se houver ajuste.</p>
+      </header>
+      <div class="cal rules">
+        <div class="day rule"><div class="n">5º <small>DIA ÚTIL</small></div><h3>Salário</h3><p>Pago até o 5º dia útil.</p></div>
+        <div class="day rule"><div class="n">20</div><h3>Comissão da 1ª quinzena</h3><p>Dias 1 a 15 do mês, paga até o dia 20 do mesmo mês.</p></div>
+        <div class="day rule"><div class="n">05</div><h3>Comissão da 2ª quinzena</h3><p>Dia 16 ao fim do mês, paga até o dia 05 do mês seguinte.</p></div>
+        <div class="day rule"><div class="n">09 <small>e</small> 23</div><h3>Vale-transporte quinzenal</h3><p>Períodos de 09 a 22 e de 23 a 08. O VT é pago antes de cada período começar.</p></div>
+        <div class="day rule"><div class="n">21</div><h3>Fechamento do banco de horas</h3><p>O período do banco de horas fecha todo dia 21. Confira suas batidas antes disso.</p></div>
+      </div>
+      <div class="next" aria-live="polite"><h3>Próximas datas</h3><ol id="nextList"></ol></div>
+    </section>
+
+    <section id="ponto" data-sec>
+      <header>
+        <div class="eyebrow">Registro de jornada</div>
+        <h2>Ponto e jornada</h2>
+        <p class="lede">O ponto é o registro oficial do seu trabalho. É dele que saem salário, horas extras, banco de horas e descontos.</p>
+      </header>
+      <div class="rules">
+        <article class="rule">
+          <h3>No mínimo 4 batidas por dia</h3>
+          <p>Entrada, saída para o intervalo, volta do intervalo e saída.</p>
+          <div class="meta"><span class="src">Manual de Conduta, item 5.8</span><span class="risk">Falha gera saldo negativo no banco e advertência</span></div>
+        </article>
+        <article class="rule">
+          <h3>Bata o ponto no exato momento</h3>
+          <p>O registro deve refletir fielmente a jornada realizada. Não é permitido registrar o ponto em horário diferente do efetivamente trabalhado.</p>
+          <div class="meta"><span class="src">Comunicado: Regras gerais sobre registro de ponto</span></div>
+        </article>
+        <article class="rule">
+          <h3>Intervalo é obrigatório</h3>
+          <p>O intervalo para descanso e alimentação deve ser usufruído e registrado no ponto, conforme a jornada praticada, mesmo em dias de maior movimento.</p>
+          <div class="meta"><span class="src">Comunicado: Regras gerais sobre registro de ponto</span></div>
+        </article>
+        <article class="rule">
+          <h3>Esqueceu uma batida? <span class="deadline">48 h</span> para regularizar</h3>
+          <p>Quando faltar registro de entrada, saída ou intervalo (batida ímpar), peça a correção ao RH em até 48 horas após o ocorrido, com justificativa.</p>
+          <div class="meta"><span class="src">Comunicado: Regularização de batidas ímpares · CLT art. 74 §2º</span><span class="risk">Fora do prazo: falha injustificada, pode gerar advertência</span></div>
+        </article>
+        <article class="rule">
+          <h3>Ajuste pelo aplicativo é exceção</h3>
+          <p>O aplicativo de ponto não deve ser usado rotineiramente para pedir ajustes. Ajustes só em situações excepcionais, como falha técnica ou ocorrência justificada, e passam pela aprovação da liderança e do DP.</p>
+          <div class="meta"><span class="src">Comunicado: Regras gerais sobre registro de ponto</span></div>
+        </article>
+        <article class="rule video">
+          <video controls playsinline preload="metadata" poster="midia/ajuste-de-ponto.jpg" aria-label="Vídeo: como solicitar ajuste de ponto pelo aplicativo"><source src="midia/ajuste-de-ponto.mp4" type="video/mp4"></video>
+          <div style="display:grid;gap:8px;min-width:0">
+            <h3>Vídeo: como pedir o ajuste de ponto no aplicativo</h3>
+            <p>Passo a passo, em cerca de 2 minutos, para registrar a solicitação de ajuste no aplicativo de ponto. Use só nos casos excepcionais acima e sempre com justificativa.</p>
+            <div class="meta"><span class="src">RH Grupo Almeria</span></div>
+            <div><a class="btn line" href="midia/ajuste-de-ponto.mp4" download="Ajuste de ponto no aplicativo - Grupo Almeria.mp4">Baixar vídeo</a></div>
+          </div>
+        </article>
+        <article class="rule">
+          <h3>Hora extra só com autorização prévia</h3>
+          <p>Não é permitido chegar antes ou sair depois do horário por iniciativa própria, mesmo com boa intenção. Se houver necessidade, avise seu líder antes, para avaliação e aprovação.</p>
+          <div class="meta"><span class="src">Comunicado: Realização de horas extras · CLT art. 59</span><span class="risk">Sujeito a medida disciplinar</span></div>
+        </article>
+        <div class="two">
+          <article class="rule">
+            <h3>Como funciona o banco de horas</h3>
+            <ul>
+              <li>As horas do banco são compensadas em até 180 dias.</li>
+              <li>Todo mês você é informado do seu saldo de horas.</li>
+            </ul>
+            <div class="meta"><span class="src">ACT 2025/2027, cl. 5ª</span></div>
+          </article>
+          <article class="rule">
+            <h3>Jornada e escala</h3>
+            <ul>
+              <li>Jornada de 8 horas diárias e 44 horas semanais, ou escala 12x36.</li>
+              <li>A escala é divulgada nos grupos da equipe.</li>
+              <li>Pelo menos uma folga cai no domingo a cada 5 semanas.</li>
+              <li>Feriado trabalhado dá direito a 1 folga compensatória.</li>
+            </ul>
+            <div class="meta"><span class="src">CCT, cl. 9ª, 11ª e 33ª</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="ausencias" data-sec>
+      <header>
+        <div class="eyebrow">Assiduidade</div>
+        <h2>Faltas, atrasos e atestados</h2>
+        <p class="lede">Avise seu líder direto sempre, e antes de qualquer outra pessoa. Avisar só colegas ou outros setores não vale como aviso.</p>
+      </header>
+      <div class="rules">
+        <article class="rule">
+          <h3>Atestado: homologue dentro do período de afastamento</h3>
+          <p>Todo atestado médico precisa ser homologado na clínica em até 24 horas úteis da emissão e sempre dentro do período de afastamento, mesmo que esse período inclua folga.</p>
+          <div class="meta"><span class="src">Comunicado: Homologação de atestados · Manual, item 5</span><span class="risk">Sem homologação: ausência vira falta injustificada</span></div>
+        </article>
+        <article class="rule clinic">
+          <img src="img/clinica-expertise.jpg" alt="Comunicado Clínica Expertise" id="clinicImg">
+          <div style="display:grid;gap:12px;min-width:0">
+            <div><div class="eyebrow">Onde homologar</div><h3 style="font-family:var(--display);font-size:22px;font-weight:600">Clínica Expertise</h3></div>
+            <div>
+              <p style="font-size:13.5px;font-weight:500;margin-bottom:6px">Horários de homologação de atestado</p>
+              <div class="hours">
+                <div class="hour"><b>Segunda, quarta e sexta</b><span>08h00 às 11h45</span></div>
+                <div class="hour"><b>Terça e quinta</b><span>15h00 às 17h45</span></div>
+              </div>
+            </div>
+            <dl>
+              <dt>Endereço</dt><dd>SEPS 914/714, Asa Sul, Bloco D, Edifício Centro Executivo Sabin, 2º andar, sala 222. Entre o Edifício Talento e o Santa Maria.</dd>
+              <dt>Telefones</dt><dd><div class="phones"><button type="button" class="phone" data-copy="(61) 3245-1825">(61) 3245-1825</button><button type="button" class="phone" data-copy="(61) 3034-8388">(61) 3034-8388</button></div></dd>
+              <dt>WhatsApp</dt><dd><div class="phones"><button type="button" class="phone" data-copy="(61) 99259-6777">(61) 99259-6777</button><a href="https://wa.me/5561992596777" target="_blank" rel="noopener" style="font-size:13.5px">Abrir conversa</a></div></dd>
+            </dl>
+            <p class="hint">Agende a homologação pelo telefone ou WhatsApp. Toque em um número para copiar.</p>
+          </div>
+        </article>
+        <article class="rule">
+          <h3>Comunique seu líder imediatamente</h3>
+          <p>Em caso de ausência, atraso ou atestado, o aviso ao líder direto é obrigatório e deve ser feito na hora, com a maior antecedência possível.</p>
+          <div class="meta"><span class="src">Comunicado: Homologação de atestados · Manual, item 4.2</span></div>
+        </article>
+        <div class="two">
+          <article class="rule">
+            <h3>Atestado de comparecimento</h3>
+            <p>Comprova só o período em que você esteve na consulta ou exame. Abona apenas esse intervalo: depois, volte para cumprir o restante da jornada.</p>
+            <div class="meta"><span class="src">Comunicado: Atestados médicos</span></div>
+          </article>
+          <article class="rule">
+            <h3>Atestado de afastamento</h3>
+            <p>É o único que justifica a ausência integral ou parcial da jornada, quando há recomendação médica para não trabalhar.</p>
+            <div class="meta"><span class="src">Comunicado: Atestados médicos</span></div>
+          </article>
+        </div>
+        <article class="rule">
+          <h3>O atestado conta a partir da data de emissão</h3>
+          <p>Mesmo que o dia caia em folga, domingo ou feriado. Exemplo: atendido na folga com atestado de 3 dias, a contagem começa na própria data do documento. A folga faz parte do afastamento e não gera dias a mais.</p>
+          <div class="meta"><span class="src">Comunicado: Atestados</span></div>
+        </article>
+        <article class="rule">
+          <h3>Falta sem justificativa</h3>
+          <ul>
+            <li>Perda do salário do dia e do descanso semanal remunerado proporcional.</li>
+            <li>Perda da comissão do dia.</li>
+            <li>Advertência formal, que também faz perder a premiação do mês para quem tem direito a ela.</li>
+          </ul>
+          <div class="meta"><span class="src">Manual, item 5.1</span><span class="src">ACT, cl. 3ª §7º</span></div>
+        </article>
+        <article class="rule">
+          <h3>Comissão nos dias de atestado ou licença</h3>
+          <p>Mesmo com atestado válido, você não participa do rateio da comissão nos dias de afastamento. Há regras específicas por empresa do grupo previstas no Acordo Coletivo: em caso de dúvida, consulte o RH.</p>
+          <div class="meta"><span class="src">Manual, item 5.1</span><span class="src">ACT, cl. 3ª §7º, D e E</span></div>
+        </article>
+        <article class="rule">
+          <h3>Atrasos</h3>
+          <p>Atraso sem justificativa adequada pode gerar advertência e desconto proporcional no salário ou na comissão.</p>
+          <div class="meta"><span class="src">Manual, item 5.1</span></div>
+        </article>
+        <article class="rule">
+          <h3>Atestado falso</h3>
+          <p>Apresentar atestado falso é violação grave.</p>
+          <div class="meta"><span class="src">Manual, item 5.1</span><span class="risk">Demissão por justa causa</span></div>
+        </article>
+        <article class="rule">
+          <h3>Ausências permitidas sem desconto</h3>
+          <ul>
+            <li>Até 2 dias pelo falecimento de sogro ou sogra.</li>
+            <li>2 dias corridos para pai ou mãe com filho internado, com guia de internação do hospital (uma vez a cada 6 meses).</li>
+            <li>Em dia de prova escolar ou de curso técnico comprovado, você trabalha só um turno ou metade da jornada.</li>
+            <li>Demais casos previstos na CLT (casamento, nascimento de filho, falecimento de familiar próximo, doação de sangue etc.).</li>
+          </ul>
+          <div class="meta"><span class="src">CCT, cl. 11ª e 36ª</span><span class="src">CLT art. 473</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="plantao" data-sec>
+      <header>
+        <div class="eyebrow">Escala</div>
+        <h2>Troca de plantão</h2>
+        <p class="lede">Nenhuma troca vale sem aprovação prévia do RH e da gestão. Respeite os prazos para dar tempo de analisar.</p>
+      </header>
+      <div class="rules">
+        <div class="two">
+          <article class="rule">
+            <h3>Dias de semana: <span class="deadline">48 h</span> antes</h3>
+            <p>Toda solicitação de troca deve ser enviada com no mínimo 48 horas de antecedência.</p>
+            <div class="meta"><span class="src">Comunicado: Troca de plantão</span></div>
+          </article>
+          <article class="rule">
+            <h3>Fim de semana: até <span class="deadline">quarta-feira</span></h3>
+            <p>Trocas que envolvem sábado ou domingo devem ser pedidas até a quarta-feira da mesma semana.</p>
+            <div class="meta"><span class="src">Comunicado: Troca de plantão</span></div>
+          </article>
+        </div>
+        <div class="form-card rule">
+          <div>
+            <h3>Solicitação de Troca de Plantão</h3>
+            <p>Preencha o formulário sempre que quiser trocar seu plantão. A troca só vale depois da aprovação.</p>
+            <a class="btn" href="https://qr.link/cpg7ah" target="_blank" rel="noopener">Abrir formulário</a>
+          </div>
+          <img class="qr" src="img/qr-troca.png" alt="QR code do formulário de troca de plantão">
+        </div>
+      </div>
+    </section>
+
+    <section id="conduta" data-sec>
+      <header>
+        <div class="eyebrow">Ambiente de trabalho</div>
+        <h2>Conduta e convivência</h2>
+        <p class="lede">Respeito vale para todo mundo, em qualquer cargo ou função.</p>
+      </header>
+      <div class="rules">
+        <article class="rule">
+          <h3>Respeito e boa convivência</h3>
+          <ul>
+            <li>Trate colegas, líderes e clientes com ética, respeito e cordialidade.</li>
+            <li>Divergências são tratadas de forma profissional e, se preciso, com apoio da liderança.</li>
+            <li>Ofensas, desrespeito, discussões excessivas ou atitudes que prejudiquem o ambiente não são toleradas.</li>
+          </ul>
+          <div class="meta"><span class="src">Comunicado: Boa convivência · Manual, itens 4.1 e 5.2 · CLT art. 482 "j"</span><span class="risk">Sujeito a medida disciplinar</span></div>
+        </article>
+        <article class="rule">
+          <h3>Assédio e discriminação</h3>
+          <p>Homofobia, racismo, qualquer discriminação, assédio moral, assédio sexual ou importunação comprovados levam à demissão por justa causa. Viu ou sofreu algo assim? Relate ao RH. Ninguém sofre retaliação por relatar de boa-fé.</p>
+          <div class="meta"><span class="src">Manual, itens 4.1, 4.7 e 5.2</span><span class="risk">Justa causa</span></div>
+        </article>
+        <article class="rule">
+          <h3>Comunicação oficial é pelo WhatsApp</h3>
+          <p>A empresa se comunica com você pelo WhatsApp, somente dentro do horário de expediente, para informações institucionais e do trabalho. A comunicação entre colegas deve ser clara, objetiva e respeitosa.</p>
+          <div class="meta"><span class="src">Manual, itens 4.1 e 7.1</span></div>
+        </article>
+        <article class="rule">
+          <h3>Recursos e informações da empresa</h3>
+          <p>Equipamentos, ferramentas e materiais são para uso no trabalho. Informações da empresa, de clientes e de parceiros são confidenciais: não compartilhe sem autorização e guarde suas senhas.</p>
+          <div class="meta"><span class="src">Manual, item 4.3</span><span class="risk">Uso inadequado: sanção disciplinar</span></div>
+        </article>
+        <article class="rule">
+          <h3>Uniforme</h3>
+          <p>A empresa fornece no mínimo dois uniformes completos, sem custo. Cuide bem deles. Ao sair da empresa, o uniforme precisa ser devolvido; se não for devolvido, o valor é descontado na rescisão.</p>
+          <div class="meta"><span class="src">CCT, cl. 40ª · Norma interna</span><span class="risk">Não devolvido: desconto na rescisão</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="higiene" data-sec>
+      <header>
+        <div class="eyebrow">Segurança alimentar</div>
+        <h2>Higiene e segurança</h2>
+        <p class="lede">Trabalhamos com alimentos. Estas regras seguem a Vigilância Sanitária (RDC 216/2004 da Anvisa) e as normas de segurança do trabalho.</p>
+      </header>
+      <div class="rules">
+        <article class="rule">
+          <h3>Proibido consumir alimentos e bebidas do restaurante</h3>
+          <p>Vale para tudo: insumos, preparos, pratos prontos, sobras da operação e itens que voltam do salão. A única exceção é com autorização prévia e expressa do gerente da unidade.</p>
+          <div class="meta"><span class="src">Norma sobre consumo interno de alimentos</span><span class="risk">Falta grave: advertência e, se repetir, sanções mais severas</span></div>
+        </article>
+        <article class="rule">
+          <h3>Nada de comer no balcão ou durante o trabalho</h3>
+          <p>Refeições e lanches só no intervalo e nos locais destinados a isso.</p>
+          <div class="meta"><span class="src">Comunicado: Conduta e higiene no local de trabalho</span><span class="risk">Sujeito a medida disciplinar</span></div>
+        </article>
+        <article class="rule">
+          <h3>Proibido fumar</h3>
+          <p>Cigarro, cigarro eletrônico, vape ou similares são proibidos em todas as dependências: áreas internas, comuns e externas da loja. Também é proibido fumar usando o uniforme, mesmo no intervalo.</p>
+          <div class="meta"><span class="src">Comunicado: Proibido fumar · Lei 9.294/96 · Decreto 8.262/14 · RDC 216/04 · CLT art. 158</span><span class="risk">Sujeito a medida disciplinar</span></div>
+        </article>
+        <div class="two">
+          <article class="rule">
+            <h3>Celular e fone de ouvido</h3>
+            <p>Proibidos nas áreas operacionais e cozinhas. Líderes podem usar o celular apenas para fins profissionais.</p>
+            <div class="meta"><span class="src">Comunicado: Uso de dispositivos e adornos · CLT arts. 158 e 444</span></div>
+          </article>
+          <article class="rule">
+            <h3>Adornos</h3>
+            <p>Brincos, piercings, anéis e pulseiras são proibidos nas áreas operacionais, por higiene e segurança.</p>
+            <div class="meta"><span class="src">Comunicado: Uso de dispositivos e adornos</span></div>
+          </article>
+        </div>
+        <article class="rule">
+          <h3>EPIs</h3>
+          <p>A empresa fornece gratuitamente os equipamentos de proteção individual necessários à sua função. O uso é obrigatório e eles devem ser devolvidos ao fim do contrato.</p>
+          <div class="meta"><span class="src">CCT, cl. 38ª · CLT art. 158</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="disciplina" data-sec>
+      <header>
+        <div class="eyebrow">Consequências</div>
+        <h2>Medidas disciplinares</h2>
+        <p class="lede">As medidas são progressivas: a reincidência no mesmo tipo de falta leva ao próximo nível. Faltas graves podem levar direto à justa causa.</p>
+      </header>
+      <div class="ladder rules">
+        <div class="step rule"><b>Advertência verbal</b><span>Orientação registrada, na primeira ocorrência leve.</span></div>
+        <div class="step rule"><b>Advertência escrita</b><span>Documento formal assinado pelo colaborador.</span></div>
+        <div class="step rule"><b>Suspensão</b><span>Dias sem trabalhar e sem remuneração.</span></div>
+        <div class="step rule"><b>Justa causa</b><span>Desligamento sem as verbas da dispensa comum (CLT art. 482).</span></div>
+      </div>
+      <div class="rules" style="margin-top:10px">
+        <article class="rule">
+          <h3>Qualquer medida disciplinar faz perder a premiação</h3>
+          <p>Advertência verbal, advertência escrita ou suspensão: em qualquer medida disciplinar, o colaborador perde a premiação do mês, se tiver direito a ela.</p>
+          <div class="meta"><span class="src">Norma interna</span><span class="risk">Perda da premiação</span></div>
+        </article>
+        <article class="rule">
+          <h3>Suspensão também pesa na comissão</h3>
+          <p>Nos dias de suspensão, seja qual for o motivo, você perde a comissão e o descanso semanal remunerado proporcional.</p>
+          <div class="meta"><span class="src">Manual, item 5.1 · ACT, cl. 3ª §7º C</span></div>
+        </article>
+        <article class="rule">
+          <h3>Levam direto à justa causa</h3>
+          <ul>
+            <li>Atestado médico falso.</li>
+            <li>Discriminação, racismo ou homofobia comprovados.</li>
+            <li>Assédio moral, sexual ou importunação comprovados.</li>
+          </ul>
+          <div class="meta"><span class="src">Manual, itens 5.1 e 5.2</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="direitos" data-sec>
+      <header>
+        <div class="eyebrow">O que você recebe</div>
+        <h2>Direitos e benefícios</h2>
+        <p class="lede">Garantidos pelo Manual de Conduta, pela Convenção Coletiva 2026/2028 (Sindhobar e Sechosc-DF) e pelo Acordo Coletivo do Grupo.</p>
+      </header>
+      <div class="rules">
+        <div class="two">
+          <article class="rule">
+            <h3>Salário em dia</h3>
+            <p>Pago até o 5º dia útil.</p>
+            <div class="meta"><span class="src">Manual, item 6.1</span></div>
+          </article>
+          <article class="rule">
+            <h3>Vale-transporte</h3>
+            <p>Pago em dinheiro na sua conta, por quinzena. O desconto é de até 6% do salário fixo (até 3% para quem trabalha em 12x36) e nunca maior que o valor recebido. Ao sair da empresa, o VT não usado é devolvido.</p>
+            <div class="meta"><span class="src">Manual, item 6.6 · CCT, cl. 7ª e 9ª §7º · ACT, cl. 4ª</span></div>
+          </article>
+          <article class="rule">
+            <h3>Comissão (gorjeta)</h3>
+            <p>A taxa de serviço é distribuída entre os colaboradores por pontos de cada cargo, calculada todo dia. Nas férias você recebe como se estivesse trabalhando. A arrecadação do mês é divulgada até o 5º dia útil do mês seguinte.</p>
+            <div class="meta"><span class="src">ACT, cl. 3ª · CCT, cl. 4ª</span></div>
+          </article>
+          <article class="rule">
+            <h3>Alimentação, uniforme e EPIs</h3>
+            <p>Alimentação de qualidade no local de trabalho, uniformes e EPIs fornecidos sem custo, e treinamento adequado para sua função.</p>
+            <div class="meta"><span class="src">Manual, itens 6.3 a 6.5 · CCT, cl. 6ª, 38ª e 40ª</span></div>
+          </article>
+        </div>
+        <article class="rule">
+          <h3>Bem Mais Benefícios (pago pela empresa)</h3>
+          <ul>
+            <li>Plano odontológico com cobertura nacional e sem carência.</li>
+            <li>Crédito mensal de R$ 60,00 para medicamentos genéricos (com receita de até 30 dias).</li>
+            <li>2 atendimentos por mês com psicólogo e pronto-atendimento por telemedicina.</li>
+            <li>Descontos em farmácias e em mais de 200 parceiros.</li>
+          </ul>
+          <p>Use pelo aplicativo Bem Mais Benefícios (Play Store e App Store). Dependentes podem ser incluídos, com desconto em folha.</p>
+          <div class="meta"><span class="src">CCT, cl. 19ª</span></div>
+        </article>
+        <div class="two">
+          <article class="rule">
+            <h3>Sindicato (Sechosc-DF)</h3>
+            <p>A empresa paga a mensalidade sindical por você. Isso dá acesso gratuito, para você e seus dependentes, a consultas médicas em várias especialidades, dentista no sindicato e assistência jurídica.</p>
+            <div class="meta"><span class="src">ACT, cl. 3ª §8º</span></div>
+          </article>
+          <article class="rule">
+            <h3>Seguro de vida</h3>
+            <p>Seguro de vida em grupo pago pela empresa: R$ 15.000,00 por morte, invalidez permanente por acidente ou invalidez funcional por doença.</p>
+            <div class="meta"><span class="src">CCT, cl. 14ª</span></div>
+          </article>
+        </div>
+        <article class="rule">
+          <h3>Garantias e estabilidades</h3>
+          <ul>
+            <li>Gestante: estabilidade desde a confirmação da gravidez até 5 meses após o parto.</li>
+            <li>Pré-aposentadoria: quem está a 24 meses de se aposentar e tem 5 anos ou mais de casa (avise o RH com a documentação do INSS).</li>
+            <li>Aviso prévio trabalhado de 30 dias; os dias extras por tempo de casa são sempre indenizados. A partir de 50 anos, 45 dias.</li>
+            <li>Quem substitui o superior temporariamente recebe a gratificação dele durante a substituição.</li>
+          </ul>
+          <div class="meta"><span class="src">CCT, cl. 16ª, 35ª, 42ª e 43ª</span></div>
+        </article>
+        <article class="rule">
+          <h3>Feriados da categoria</h3>
+          <div class="tbl">
+            <table>
+              <thead><tr><th>Data</th><th>Feriado</th></tr></thead>
+              <tbody>
+                <tr><td class="num">01/01</td><td>Ano Novo</td></tr>
+                <tr><td class="num">Móvel</td><td>Terça-feira de Carnaval</td></tr>
+                <tr><td class="num">Móvel</td><td>Paixão de Cristo</td></tr>
+                <tr><td class="num">21/04</td><td>Aniversário de Brasília / Tiradentes</td></tr>
+                <tr><td class="num">01/05</td><td>Dia do Trabalhador</td></tr>
+                <tr><td class="num">Móvel</td><td>Corpus Christi</td></tr>
+                <tr><td class="num">07/09</td><td>Independência do Brasil</td></tr>
+                <tr><td class="num">12/10</td><td>Nossa Senhora Aparecida</td></tr>
+                <tr><td class="num">02/11</td><td>Finados</td></tr>
+                <tr><td class="num">15/11</td><td>Proclamação da República</td></tr>
+                <tr><td class="num">20/11</td><td>Zumbi e Consciência Negra</td></tr>
+                <tr><td class="num">30/11</td><td>Dia do Evangélico</td></tr>
+                <tr><td class="num">25/12</td><td>Natal</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Trabalhou no feriado? Você recebe 1 folga compensatória.</p>
+          <div class="meta"><span class="src">CCT, cl. 11ª</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="quem" data-sec>
+      <header>
+        <div class="eyebrow">Manual de Conduta e Ética 2025</div>
+        <h2>Quem somos</h2>
+      </header>
+      <div class="mvv rules">
+        <article class="rule"><h3>Missão</h3><p>Proporcionar uma experiência gastronômica única, combinando pratos de alta qualidade, preparados com ingredientes frescos e locais, com um serviço de excelência.</p></article>
+        <article class="rule"><h3>Visão</h3><p>Ser um dos 10 maiores grupos gastronômicos do Centro-Oeste, com mais de 500 colaboradores engajados no time.</p></article>
+      </div>
+      <div class="rules">
+        <article class="rule">
+          <h3>Nossos valores</h3>
+          <ul class="values">
+            <li>A qualidade vem em primeiro lugar</li><li>Somos comprometidos</li><li>Amamos servir e somos hospitaleiros</li><li>Somos alegres e positivos</li><li>Cultivamos a prosperidade</li><li>Somos honestos e respeitamos o próximo</li><li>Trabalhamos em equipe</li>
+          </ul>
+        </article>
+        <article class="rule">
+          <h3>Para quem lidera</h3>
+          <p>Líderes são exemplo: cumprem e fazem cumprir este guia, orientam e treinam a equipe, estimulam dúvidas antes de decisões difíceis e garantem que ninguém sofra retaliação por relatar um problema de boa-fé.</p>
+          <div class="meta"><span class="src">Manual, item 4.7</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="comunicados" data-sec>
+      <header>
+        <div class="eyebrow">Artes originais</div>
+        <h2>Comunicados do RH</h2>
+        <p class="lede">Toque em um comunicado para ver a arte completa, ou baixe a arte para guardar no celular.</p>
+        <div><a class="btn line" href="docs/comunicados-grupo-almeria.zip" download="Comunicados Grupo Almeria.zip">Baixar todos os comunicados (.zip)</a></div>
+      </header>
+      <div class="gallery rules" id="gallery"></div>
+    </section>
+
+    <section id="documentos" data-sec>
+      <header>
+        <div class="eyebrow">Base deste guia</div>
+        <h2>Documentos de referência</h2>
+        <p class="lede">Abra ou baixe o texto completo. Em caso de dúvida, o texto oficial prevalece sobre este resumo. Procure seu líder ou o RH.</p>
+      </header>
+      <div class="docs rules">
+        <div class="doc rule"><b>Manual de Conduta e Ética</b><span>Grupo Almeria, edição 2025 · PDF, 5 páginas</span>
+          <div class="acts"><a class="btn line" href="docs/manual-de-conduta-e-etica-2025.pdf" target="_blank" rel="noopener">Abrir</a><a class="btn" href="docs/manual-de-conduta-e-etica-2025.pdf" download="Manual de Conduta e Etica - Grupo Almeria 2025.pdf">Baixar</a></div></div>
+        <div class="doc rule"><b>Convenção Coletiva 2026/2028</b><span>Sindhobar-DF e Sechosc-DF · vigência de 01/05/2026 a 30/04/2028 · PDF, 31 páginas</span>
+          <div class="acts"><a class="btn line" href="docs/cct-2026-2028.pdf" target="_blank" rel="noopener">Abrir</a><a class="btn" href="docs/cct-2026-2028.pdf" download="CCT 2026-2028 Sindhobar Sechosc-DF.pdf">Baixar</a></div></div>
+        <div class="doc rule"><b>Acordo Coletivo 2025/2027</b><span>Grupo Almeria e Sechosc-DF · vigência de 11/03/2025 a 10/03/2027 · vale para as empresas signatárias · PDF, 10 páginas</span>
+          <div class="acts"><a class="btn line" href="docs/act-2025-2027.pdf" target="_blank" rel="noopener">Abrir</a><a class="btn" href="docs/act-2025-2027.pdf" download="ACT 2025-2027 Grupo Almeria.pdf">Baixar</a></div></div>
+      </div>
+      <div class="doc rule" style="margin-top:10px"><b>Todos os comunicados</b><span>As 15 artes em alta qualidade, num arquivo .zip</span>
+        <div class="acts"><a class="btn" href="docs/comunicados-grupo-almeria.zip" download="Comunicados Grupo Almeria.zip">Baixar todos</a></div></div>
+    </section>
+
+    <div class="empty" id="empty" hidden>Nada encontrado para essa busca. Tente outra palavra, como "atestado" ou "ponto".</div>
+    <footer class="end">Atenciosamente, RH Grupo Almeria · Atualizado em outubro de 2026</footer>
+  </main>
+</div>
+</div>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Comunicado">
+  <div class="lbbar"><a class="btn" id="lbDl" href="#">Baixar</a><button type="button" id="lbClose">Fechar</button></div>
+  <img id="lbImg" alt="">
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
