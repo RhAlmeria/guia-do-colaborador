@@ -1,7 +1,7 @@
 /* Guia do Colaborador — Grupo Almeria
    Os cadastros vão para uma planilha Google do RH por meio de um Apps Script.
    A senha da área do RH é conferida no Apps Script, nunca aqui. */
-const API_URL = "COLE_AQUI_A_URL_DO_APPS_SCRIPT";
+const API_URL = "https://script.google.com/macros/s/AKfycbzS5M5CdAyml70mXYjf3fYIaLUSI82cusGkRLWPPmBBiPc_P0EkXXRslmH8QYxolzUi/exec";
 
 /* ---------- utilidades ---------- */
 const $ = s => document.querySelector(s);
